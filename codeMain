@@ -1,0 +1,23 @@
+#The core idea behind this code is that we can only pick from the left or right when choosing. So, by picking from the left or right and putting the new array into a recursive function,
+#we can just go through the entire array to find the largest available points total.
+
+class Solution:
+    def maxScore(self, cardPoints: List[int], k: int) -> int:
+        
+        #This is the main function of the array, if we are at the total number of cards, we return the max value possible from this pool and go back to the last call to find
+        #that layer's max value
+        def helper(cardArray, value, k, maxValue):
+            if value == k - 1:  #if we are at the "bottom" or the furthest possible iteration of the card stack.
+                if cardArray[0] > cardArray[len(cardArray) - 1]:
+                    return cardArray[0]
+                else:
+                    return cardArray[len(cardArray) - 1]
+            else:
+                #We want to keep the values that we are pulling from the array so that they are counted later
+                leftValue = cardArray[0]
+                rightValue = cardArray[len(cardArray) - 1]
+                maxValue += max(rightValue + helper(cardArray[0:len(cardArray) - 1], value + 1, k, maxValue),leftValue + helper(cardArray[1:len(cardArray)], value + 1, k, maxValue) )
+                return maxValue
+        
+        maxScore = 0
+        return helper(cardPoints, 0, k, maxScore)
