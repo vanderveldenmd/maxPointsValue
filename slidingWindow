@@ -1,0 +1,24 @@
+#This will do exactly the same as the mainCode will, only this uses a sliding window instead of recursing through the entire array
+class Solution:
+    def maxScore(self, cardPoints: List[int], k: int) -> int:
+        
+        #This first bit of code is initializing the maxScore value based on the leftmost values in the cardPoints array and working backwards from there
+        maxScore, temp = 0,0
+        arrayLen = len(cardPoints)
+        for i in range(0,k):
+            maxScore += cardPoints[i]
+          
+        #Here I am initializing the sliding window, starting with the fully leftmost array and sliding one window to the right each time  
+        leftEnd = k
+        rightEnd = arrayLen - 1
+        for i in range(0,k):
+            leftEnd -= 1
+            rightEnd -= 1
+            for j in range(0, leftEnd):
+                temp += cardPoints[j]
+            for l in range(arrayLen - 1, rightEnd, -1):
+                temp += cardPoints[l]
+            if temp > maxScore:
+                maxScore = temp
+            temp = 0
+        return maxScore
